@@ -403,7 +403,7 @@ class ThaplMagics(Magics):
 
         # Publish image
         try:
-            for image_filename in glob(image_filename_glob):
+            for image_filename in sorted(list(glob(image_filename_glob))):
                 image = open(image_filename, 'rb').read()
                 plot_mime_type = _mimetypes.get(plot_format,
                                                 'image/%s' % (plot_format))
