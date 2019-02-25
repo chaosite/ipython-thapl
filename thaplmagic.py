@@ -344,7 +344,7 @@ class ThaplMagics(Magics):
             tikz_package = 'tikz'
 
         tex = []
-        tex.append(r'\\documentclass{beamer}')
+        tex.append(r'\documentclass{beamer}')
 
         tex.append(
             '\\usepackage[%(tikz_options)s]{%(tikz_package)s}\n' % locals())
