@@ -345,7 +345,7 @@ class ThaplMagics(Magics):
             '\\usepackage[%(tikz_options)s]{%(tikz_package)s}\n' % locals())
         tex.append(r'\usepackage{bashful}' + '\n')
 
-        for pkg in latex_package + ('adjustbox', ):
+        for pkg in latex_package + ['adjustbox']:
             tex.append(r'''
 \usepackage{%s}
             ''' % pkg)
