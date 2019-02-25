@@ -358,7 +358,7 @@ class ThaplMagics(Magics):
         if args.preamble is None:
             args.preamble = ''
 
-        tex.append('''
+        tex.append(r'''
 \adjustboxset{max width=\columnwidth}
 \adjustboxset{max height=0.8\textheight}
 \adjustboxset{center}
