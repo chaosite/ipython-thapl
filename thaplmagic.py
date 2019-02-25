@@ -26,21 +26,20 @@ Usage
 #  the file COPYING, distributed as part of this software.
 # ----------------------------------------------------------------------------
 from __future__ import print_function
+
 import sys
 import tempfile
-from glob import glob
 from os import chdir, getcwd, environ, pathsep, path
-from subprocess import call
 from shutil import rmtree, copy
+from subprocess import call
 from xml.dom import minidom
 
 from IPython.core.displaypub import publish_display_data
-from IPython.core.magic import (Magics, magics_class, line_magic, cell_magic,
-                                needs_local_scope)
-from IPython.testing.skipdoctest import skip_doctest
+from IPython.core.magic import Magics, magics_class, cell_magic, needs_local_scope
 from IPython.core.magic_arguments import (argument, magic_arguments,
                                           parse_argstring)
-from IPython.utils.py3compat import unicode_to_str
+from IPython.testing.skipdoctest import skip_doctest
+
 
 try:
     import pkg_resources  # part of setuptools
@@ -303,6 +302,8 @@ class ThaplMagics(Magics):
         imagemagick_path = args.imagemagick
         picture_options = args.pictureoptions
         tikz_options = args.tikzoptions
+        python_path = args.python_path
+
 
         # arguments 'code' in line are prepended to the cell lines
         if cell is None:
@@ -340,7 +341,6 @@ class ThaplMagics(Magics):
 
         tex.append(
             '\\usepackage[%(tikz_options)s]{%(tikz_package)s}\n' % locals())
-        
         tex.append(
             r'\usepackage{bashful}' + '\n')
 
@@ -365,7 +365,7 @@ class ThaplMagics(Magics):
 
         tex.append(r'''
 \bash[stdoutFile=\jobname.thapl.tex]
-PYTHONPATH="%(python_path) python3 -m thapl.main %(thapl_file)
+PYTHONPATH="%(python_path) python3 -m thapl.main ./magic.thapl
 \END
 
 \include{\jobname.thapl}
