@@ -40,6 +40,8 @@ from IPython.core.magic_arguments import (argument, magic_arguments,
                                           parse_argstring)
 from IPython.testing.skipdoctest import skip_doctest
 
+import thapl.main
+
 
 try:
     import pkg_resources  # part of setuptools
@@ -100,9 +102,8 @@ class ThaplMagics(Magics):
         svg.setAttribute('height', '%dpx' % height)
         return svg.toxml()
 
-    def _write_thapl(self, code, encoding, dir):
-        with open(dir + path.sep + 'magic.thapl', 'w', encoding=encoding) as f:
-            f.write(code)
+    def _run_thapl(self, code, encoding, dir):
+        return thapl.main.run(code, cwd=dir)
 
     def _run_latex(self, code, encoding, dir):
         with open(dir + path.sep + 'magic.tex', 'w', encoding=encoding) as f:
@@ -369,13 +370,7 @@ class ThaplMagics(Magics):
 \\begin{document}
         ''' % locals())
 
-        tex.append(r'''
-\bash[stdoutFile=\jobname.thapl.tex]
-PYTHONPATH="%(python_path)s python3 -m thapl.main ./magic.thapl
-\END
-
-\include{\jobname.thapl}
-        ''' % locals())
+        tex.append(self._run_thapl(code, encoding, plot_dir))
 
         tex.append('''
 \\end{document}
@@ -384,10 +379,9 @@ PYTHONPATH="%(python_path)s python3 -m thapl.main ./magic.thapl
         tex = str('').join(tex)
 
         if args.showlatex:
-            print(code)
+            print(tex)
             return
 
-        self._write_thapl(code, encoding, plot_dir)
         latex_log = self._run_latex(tex, encoding, plot_dir)
 
         key = 'ThaplMagic.Thapl'
