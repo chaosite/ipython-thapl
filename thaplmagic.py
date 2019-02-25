@@ -33,6 +33,7 @@ from os import chdir, getcwd, environ, pathsep, path
 from shutil import rmtree, copy
 from subprocess import call
 from xml.dom import minidom
+from glob import glob
 
 from IPython.core.displaypub import publish_display_data
 from IPython.core.magic import Magics, magics_class, cell_magic, needs_local_scope
@@ -41,7 +42,6 @@ from IPython.core.magic_arguments import (argument, magic_arguments,
 from IPython.testing.skipdoctest import skip_doctest
 
 import thapl.main
-
 
 try:
     import pkg_resources  # part of setuptools
@@ -139,11 +139,14 @@ class ThaplMagics(Magics):
         # in case of error return LaTeX log
         if ret_log:
             try:
-                f = open('thapl.log', 'r')
+                f = open('magic.log', 'r')
                 log = f.read()
                 f.close()
             except IOError:
-                print("No log file generated.", file=sys.stderr)
+                print(
+                    "No log file generated, files={0!r}".format(
+                        tuple(glob('*'))),
+                    file=sys.stderr)
 
         chdir(current_dir)
 
@@ -280,12 +283,6 @@ class ThaplMagics(Magics):
         type=str,
         default='',
         help='Options to pass when loading TikZ or CircuiTikZ package.')
-    @argument(
-        '--pythonpath',
-        action='store',
-        type=str,
-        default='',
-        help='PYTHONPATH to use when running Thapl. Default is empty.')
     @needs_local_scope
     @argument(
         'code',
@@ -309,8 +306,6 @@ class ThaplMagics(Magics):
         imagemagick_path = args.imagemagick
         picture_options = args.pictureoptions
         tikz_options = args.tikzoptions
-        python_path = args.pythonpath
-
 
         # arguments 'code' in line are prepended to the cell lines
         if cell is None:
@@ -348,8 +343,7 @@ class ThaplMagics(Magics):
 
         tex.append(
             '\\usepackage[%(tikz_options)s]{%(tikz_package)s}\n' % locals())
-        tex.append(
-            r'\usepackage{bashful}' + '\n')
+        tex.append(r'\usepackage{bashful}' + '\n')
 
         for pkg in latex_package:
             tex.append('''
