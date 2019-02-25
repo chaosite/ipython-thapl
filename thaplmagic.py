@@ -398,7 +398,7 @@ class ThaplMagics(Magics):
         elif plot_format == 'svg':
             self._convert_pdf_to_svg(plot_dir)
 
-        image_filename = "%s/tikz.%s" % (plot_dir, plot_format)
+        image_filename = "%s/magic.%s" % (plot_dir, plot_format)
 
         # Publish image
         try:
