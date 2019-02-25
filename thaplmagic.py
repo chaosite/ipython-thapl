@@ -279,6 +279,12 @@ class ThaplMagics(Magics):
         type=str,
         default='',
         help='Options to pass when loading TikZ or CircuiTikZ package.')
+    @argument(
+        '--pythonpath',
+        action='store',
+        type=str,
+        default='',
+        help='PYTHONPATH to use when running Thapl. Default is empty.')
     @needs_local_scope
     @argument(
         'code',
@@ -302,7 +308,7 @@ class ThaplMagics(Magics):
         imagemagick_path = args.imagemagick
         picture_options = args.pictureoptions
         tikz_options = args.tikzoptions
-        python_path = args.python_path
+        python_path = args.pythonpath
 
 
         # arguments 'code' in line are prepended to the cell lines
