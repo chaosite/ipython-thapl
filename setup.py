@@ -6,7 +6,6 @@ except ImportError:
     from distutils.core import setup
 
 classifiers = [
-    "Programming Language :: Python :: 2",
     "Programming Language :: Python :: 3",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
@@ -19,16 +18,16 @@ classifiers = [
 with open("README.md", "r") as fp:
     long_description = fp.read()
 
-__author__ = "Michael Kraus"
-__version__ = "0.1.1"
+__author__ = "Matan Peled"
+__version__ = "0.0.1"
 
 setup(
-    name="ipython-tikzmagic",
+    name="ipython-thaplmagic",
     version=__version__,
     author=__author__,
-    url="https://github.com/mkrphys/ipython-tikzmagic",
-    py_modules=["tikzmagic"],
-    description="IPython magics for generating figures with TikZ",
+    url="https://github.com/chaosite/ipython-thaplmagic",
+    py_modules=["thaplmagic"],
+    description="IPython magics for generating animations with Thapl",
     long_description=long_description,
     license="BSD",
     classifiers=classifiers,
