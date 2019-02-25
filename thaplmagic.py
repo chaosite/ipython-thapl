@@ -157,7 +157,7 @@ class ThaplMagics(Magics):
         chdir(dir)
 
         try:
-            retcode = call("pdf2svg magic.pdf magic.svg", shell=True)
+            retcode = call("pdf2svg magic.pdf magic%05d.svg all", shell=True)
             if retcode != 0:
                 print(
                     "pdf2svg terminated with signal",
@@ -174,7 +174,7 @@ class ThaplMagics(Magics):
 
         try:
             retcode = call(
-                "%s magic.png -quality 100 -background white -flatten magic.jpg"
+                "%s magic.pdf -quality 100 -background white -flatten magic.jpg"
                 % imagemagick_path,
                 shell=True)
             if retcode != 0:
@@ -208,7 +208,7 @@ class ThaplMagics(Magics):
         '--format',
         action='store',
         type=str,
-        default='png',
+        default='svg',
         help='Plot format (png, svg or jpg).')
     @argument(
         '-e',
@@ -362,6 +362,7 @@ class ThaplMagics(Magics):
 \adjustboxset{max width=\columnwidth}
 \adjustboxset{max height=0.8\textheight}
 \adjustboxset{center}
+\setbeamertemplate{navigation symbols}{}
 %s
             ''' % args.preamble)
 
@@ -398,17 +399,19 @@ class ThaplMagics(Magics):
         elif plot_format == 'svg':
             self._convert_pdf_to_svg(plot_dir)
 
-        image_filename = "%s/magic.%s" % (plot_dir, plot_format)
+        image_filename_glob = "%s/magic.%s" % (plot_dir, plot_format)
 
         # Publish image
         try:
-            image = open(image_filename, 'rb').read()
-            plot_mime_type = _mimetypes.get(plot_format,
-                                            'image/%s' % (plot_format))
-            width, height = [int(s) for s in size.split(',')]
-            if plot_format == 'svg':
-                image = self._fix_gnuplot_svg_size(image, size=(width, height))
-            display_data.append((key, {plot_mime_type: image}))
+            for image_filename in glob(image_filename_glob):
+                image = open(image_filename, 'rb').read()
+                plot_mime_type = _mimetypes.get(plot_format,
+                                                'image/%s' % (plot_format))
+                width, height = [int(s) for s in size.split(',')]
+                if plot_format == 'svg':
+                    image = self._fix_gnuplot_svg_size(
+                        image, size=(width, height))
+                display_data.append((key, {plot_mime_type: image}))
 
         except IOError:
             print("No image generated.", file=sys.stderr)
