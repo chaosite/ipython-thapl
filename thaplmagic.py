@@ -291,7 +291,7 @@ class ThaplMagics(Magics):
         '''
 
         # read arguments
-        args = parse_argstring(self.tikz, line)
+        args = parse_argstring(self.thapl, line)
         scale = args.scale
         size = args.size
         width, height = size.split(',')
