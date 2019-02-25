@@ -371,7 +371,7 @@ class ThaplMagics(Magics):
 
         tex.append(r'''
 \bash[stdoutFile=\jobname.thapl.tex]
-PYTHONPATH="%(python_path) python3 -m thapl.main ./magic.thapl
+PYTHONPATH="%(python_path)s python3 -m thapl.main ./magic.thapl
 \END
 
 \include{\jobname.thapl}
