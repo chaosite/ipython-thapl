@@ -399,7 +399,7 @@ class ThaplMagics(Magics):
         elif plot_format == 'svg':
             self._convert_pdf_to_svg(plot_dir)
 
-        image_filename_glob = "%s/magic.%s" % (plot_dir, plot_format)
+        image_filename_glob = "%s/magic*.%s" % (plot_dir, plot_format)
 
         # Publish image
         try:
@@ -412,7 +412,6 @@ class ThaplMagics(Magics):
                     image = self._fix_gnuplot_svg_size(
                         image, size=(width, height))
                 display_data.append((key, {plot_mime_type: image}))
-
         except IOError:
             print("No image generated.", file=sys.stderr)
 
