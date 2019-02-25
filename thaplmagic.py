@@ -345,18 +345,23 @@ class ThaplMagics(Magics):
             '\\usepackage[%(tikz_options)s]{%(tikz_package)s}\n' % locals())
         tex.append(r'\usepackage{bashful}' + '\n')
 
-        for pkg in latex_package:
-            tex.append('''
-\\usepackage{%s}
+        for pkg in latex_package + ('adjustbox', ):
+            tex.append(r'''
+\usepackage{%s}
             ''' % pkg)
 
         for lib in tikz_library:
-            tex.append('''
-\\usetikzlibrary{%s}
+            tex.append(r'''
+\usetikzlibrary{%s}
             ''' % lib)
 
-        if args.preamble is not None:
-            tex.append('''
+        if args.preamble is None:
+            args.preamble = ''
+
+        tex.append('''
+\adjustboxset{max width=\columnwidth}
+\adjustboxset{max height=0.8\textheight}
+\adjustboxset{center}
 %s
             ''' % args.preamble)
 
