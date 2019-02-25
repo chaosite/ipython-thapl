@@ -43,7 +43,7 @@ from IPython.testing.skipdoctest import skip_doctest
 
 try:
     import pkg_resources  # part of setuptools
-    __version__ = pkg_resources.require("ipython-thapl")[0].version
+    __version__ = pkg_resources.require("ipython-thaplmagic")[0].version
 except ImportError:
     __version__ = 'unknown'
 
